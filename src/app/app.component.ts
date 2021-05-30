@@ -38,7 +38,23 @@ export class AppComponent {
       .subscribe((result: TaskDialogResult) => result.task?.title && result.task?.description ? this.todo.push(result.task) : null);
   }
 
-  editTask(list: string, task: Task): void {}
+  editTask(list: 'todo' | 'inProgress' | 'done', task: Task): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        task,
+        enableDelete: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: TaskDialogResult) => {
+      const dataList = this[list];
+      const taskIndex = dataList.indexOf(task);
+      if (result.delete) {
+        dataList.splice(taskIndex, 1);
+      }
+    });
+  }
 
   drop(event: CdkDragDrop<Task[] | any>): void {
     if (event.previousContainer === event.container) {
