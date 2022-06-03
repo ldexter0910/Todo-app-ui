@@ -57,9 +57,6 @@ export class AppComponent {
   }
 
   drop(event: CdkDragDrop<Task[] | any>): void {
-    if (event.previousContainer === event.container) {
-      return;
-    }
     if (!event.container.data || !event.previousContainer.data) {
       return;
     }
